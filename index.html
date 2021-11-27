@@ -37,9 +37,18 @@
 	</header>
 
 	<main class="container-fluid flex-fill p-3 my-3 bg-light text-dark">
+		<div class="container">
+			<h1>Game night Geo Block Checker</h1>
+		</div>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="container p-3">
+					<select name="team" id="team">
+						<option value="canadiens">Montreal Canadiens</option>
+						<option value="leafs">Toronto Leafs</option>
+						<option value="senators">Ottawa Senators</option>
+						<option value="jets">Winnipeg Jets</option>
+					</select>
 					<input type="text" name="zipCode" id="zipCode" maxlength="3" size="4" placeholder="Zip code">
 					<button id="checkButton" class="btn btn-primary">Check</button>
 				</div>
