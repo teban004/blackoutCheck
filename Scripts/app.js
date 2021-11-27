@@ -39,10 +39,8 @@
 			}
 			else {
 				if ( validZipCode(zipCode) ) {
-					let brand = document.querySelector('input[name="brand"]:checked').id;
-					
 					result.className = "alert alert-info";
-					result.innerHTML = "<p>The result goes here!</p><p>The selected brand is: <b>" + brand + "</b></p><p>The zip code is: <b>" + zipCode + "</b></p><p>The selected team is: <b>" + team + "</b></p><p>Zip code validation: <b>" + validZipCode(zipCode) + "</b></p>";
+					result.innerHTML = "<p>The result goes here!</p><p>The zip code is: <b>" + zipCode + "</b></p><p>The selected team is: <b>" + team + "</b></p><p>Zip code validation: <b>" + validZipCode(zipCode) + "</b></p>";
 				}
 				else {
 					result.className = "alert alert-danger";
