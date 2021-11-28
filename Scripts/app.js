@@ -4,10 +4,35 @@
 {
 
 	// initialization function
-	function Start()
+	async function Start()
 	{
 		// sending this message on the console just to know that this file has been loaded correctly and it's executing JavaScript
 		console.log("App started...");
+
+		async function loadPostalCodes(myRequest) {
+			let response = await fetch(myRequest);
+			if( response.status != 200 ) {
+				throw new Error("Couldn't fetch the file: " + myRequest);
+			}
+			let text_data = await response.text();
+			return text_data;
+		}
+		// load the zip codes from a file
+		console.log("Starting to load postal codes...");
+		let fileName = "./Content/canadiens.csv";
+		let text_data = await loadPostalCodes(fileName);
+		let codesCanadiens = text_data.split('\n');
+		fileName = "./Content/jets.csv";
+		text_data = await loadPostalCodes(fileName);
+		let codesJets = text_data.split('\n');
+		fileName = "./Content/leafs.csv";
+		text_data = await loadPostalCodes(fileName);
+		let codesLeafs = text_data.split('\n');
+		fileName = "./Content/senators.csv";
+		text_data = await loadPostalCodes(fileName);
+		let codesSenators = text_data.split('\n');
+
+		console.log("Finished loading postal codes.");
 
 		// get a reference to the HTML element with id=checkButton
 		let checkButton = document.getElementById("checkButton");
