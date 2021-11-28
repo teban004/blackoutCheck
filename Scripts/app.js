@@ -3,34 +3,36 @@
 (function()
 {
 
-	// initialization function
+	// initialization function. Made it asynchronous so the text files can be loaded asynchronously
 	async function Start()
 	{
 		// sending this message on the console just to know that this file has been loaded correctly and it's executing JavaScript
 		console.log("App started...");
 
-		async function loadPostalCodes(myRequest) {
-			let response = await fetch(myRequest);
+		// asynchronous function that loads a text file and returns the content as a string
+		async function loadPostalCodes(fileLocation) {
+			let response = await fetch(fileLocation);
 			if( response.status != 200 ) {
-				throw new Error("Couldn't fetch the file: " + myRequest);
+				throw new Error("Couldn't fetch the file: " + fileLocation);
 			}
-			let text_data = await response.text();
-			return text_data;
+			let retrievedString = await response.text();
+			return retrievedString;
 		}
-		// load the zip codes from a file
+
+		// load the zip codes from the source files
 		console.log("Starting to load postal codes...");
 		let fileName = "./Content/canadiens.csv";
 		let text_data = await loadPostalCodes(fileName);
-		let codesCanadiens = text_data.split('\n');
+		let codesCanadiens = text_data.split('\n').map(elem => elem.trim()); // splits the text into array elements and trims each one of the elements
 		fileName = "./Content/jets.csv";
 		text_data = await loadPostalCodes(fileName);
-		let codesJets = text_data.split('\n');
+		let codesJets = text_data.split('\n').map(elem => elem.trim()); // splits the text into array elements and trims each one of the elements
 		fileName = "./Content/leafs.csv";
 		text_data = await loadPostalCodes(fileName);
-		let codesLeafs = text_data.split('\n');
+		let codesLeafs = text_data.split('\n').map(elem => elem.trim()); // splits the text into array elements and trims each one of the elements
 		fileName = "./Content/senators.csv";
 		text_data = await loadPostalCodes(fileName);
-		let codesSenators = text_data.split('\n');
+		let codesSenators = text_data.split('\n').map(elem => elem.trim()); // splits the text into array elements and trims each one of the elements
 
 		console.log("Finished loading postal codes.");
 
@@ -54,7 +56,7 @@
 
 			// function that checks if a zip code is valid or not
 			let validZipCode = function(zipCode) {
-				let regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]$/i);
+				let regex = new RegExp(/^[A-Z]\d[A-Z]$/i);
 				if (regex.test(zipCode))
 					return true;  // returns true only when the zipCode complies with the regular expression
 				else
@@ -68,8 +70,47 @@
 			}
 			else {
 				if ( validZipCode(zipCode) ) {
-					result.className = "alert alert-info";
-					result.innerHTML = "<p>The result goes here!</p><p>The zip code is: <b>" + zipCode + "</b></p><p>The selected team is: <b>" + team + "</b></p><p>Zip code validation: <b>" + validZipCode(zipCode) + "</b></p>";
+					messageTxt = "<p>For the zip code: <b>" + zipCode + "</b></p><p>The <b>" + team + "</b> games are ";
+					// check the blackout constraint according to the selected team
+					switch( team ) {
+						case "leafs":
+							if ( codesLeafs.includes(zipCode) ) {
+								result.className = "alert alert-warning";
+								messageTxt += "blocked.</p>";
+							} else {
+								result.className = "alert alert-success";
+								messageTxt += "NOT blocked.</p>";
+							}
+							break;
+						case "canadiens":
+							if ( codesCanadiens.includes(zipCode) ) {
+								result.className = "alert alert-warning";
+								messageTxt += "blocked.</p>";
+							} else {
+								result.className = "alert alert-success";
+								messageTxt += "NOT blocked.</p>";
+							}
+							break;
+						case "senators":
+							if ( codesSenators.includes(zipCode) ) {
+								result.className = "alert alert-warning";
+								messageTxt += "blocked.</p>";
+							} else {
+								result.className = "alert alert-success";
+								messageTxt += "NOT blocked.</p>";
+							}
+							break;
+						case "jets":
+							if ( codesJets.includes(zipCode) ) {
+								result.className = "alert alert-warning";
+								messageTxt += "blocked.</p>";
+							} else {
+								result.className = "alert alert-success";
+								messageTxt += "NOT blocked.</p>";
+							}
+							break;
+					}
+					result.innerHTML = messageTxt;
 				}
 				else {
 					result.className = "alert alert-danger";
