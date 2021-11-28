@@ -18,21 +18,25 @@
 
 			console.log("Check button was clicked!"); // checking that the click is being processed here
 
+			// get a reference to the HTML element with id=result
 			let result = document.getElementById("result");
 
+			// get a reference to the HTML element with id=team
 			let team = document.getElementById("team").value;
 
-			// check if the user entered the 3 characters of the zip code
+			// get a reference to the HTML element with id=zipCode and change it to uppercase
 			let zipCode = document.getElementById("zipCode").value.toUpperCase();
 
+			// function that checks if a zip code is valid or not
 			let validZipCode = function(zipCode) {
 				let regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]$/i);
 				if (regex.test(zipCode))
-					return true;
+					return true;  // returns true only when the zipCode complies with the regular expression
 				else
 					return false;
 			};
 
+			// check if the user entered the 3 characters of the zip code
 			if (zipCode.length < 3) {
 				result.className = "alert alert-danger";
 				result.innerHTML = "<p>Please enter the first 3 characters of the zip code.</p>";
@@ -50,7 +54,7 @@
 		});
 			
 		
-	}
+	} // end of Start()
 
 	// event listener, when the window has finished loading, it calls the Start function
 	window.addEventListener("load", Start)
