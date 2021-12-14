@@ -36,20 +36,18 @@
 
 		console.log("Finished loading postal codes.");
 
-		// function that checks if a zip code is valid or not
+		// function that checks if a zip code is valid or not (only the first 3 digits)
 		let validZipCode = function(zipCode) {
 			let regex = new RegExp(/^[A-Z]\d[A-Z]$/i);
-			if (regex.test(zipCode))
+			if ( zipCode.length == 3 && regex.test(zipCode))
 				return true;  // returns true only when the zipCode complies with the regular expression
 			else
 				return false;
 		};
 
-
-		let checkBlackout = function(zipCode) {
-			// get a reference to the HTML element with id=team
-			let team = document.getElementById("team").value;
-
+		// function that checks if a zipCode is in blackout or not
+		let checkBlackout = function(zipCode, team) {
+			
 			// get a reference to the HTML element with id=result
 			let result = document.getElementById("result");
 
@@ -57,7 +55,7 @@
 				messageTxt = "<p>For the zip code: <b>" + zipCode + "</b></p><p>The <b>" + team + "</b> games are ";
 				// check the blackout constraint according to the selected team
 				switch( team ) {
-					case "leafs":
+					case "Leafs":
 						if ( codesLeafs.includes(zipCode) ) {
 							result.className = "alert alert-warning";
 							messageTxt += "blocked.</p>";
@@ -66,7 +64,7 @@
 							messageTxt += "NOT blocked.</p>";
 						}
 						break;
-					case "canadiens":
+					case "Canadiens":
 						if ( codesCanadiens.includes(zipCode) ) {
 							result.className = "alert alert-warning";
 							messageTxt += "blocked.</p>";
@@ -75,7 +73,7 @@
 							messageTxt += "NOT blocked.</p>";
 						}
 						break;
-					case "senators":
+					case "Senators":
 						if ( codesSenators.includes(zipCode) ) {
 							result.className = "alert alert-warning";
 							messageTxt += "blocked.</p>";
@@ -84,7 +82,7 @@
 							messageTxt += "NOT blocked.</p>";
 						}
 						break;
-					case "jets":
+					case "Jets":
 						if ( codesJets.includes(zipCode) ) {
 							result.className = "alert alert-warning";
 							messageTxt += "blocked.</p>";
@@ -98,11 +96,12 @@
 			}
 			else {
 				result.className = "alert alert-danger";
-				result.innerHTML = "<p>The zip code <b>" + zipCode + "</b> is not valid.</p>";
+				result.innerHTML = "<p>The zip code '<b>" + zipCode + "</b>' is not valid.</p>";
 			}
 		}; // end of checkBlackout
 
-
+		// get a reference to the HTML element with id=zipCode
+		let zipCodeTxtField = document.getElementById("zipCode");
 
 		// get a reference to the HTML element with id=checkButton
 		let checkButton = document.getElementById("checkButton");
@@ -113,22 +112,61 @@
 
 			console.log("Check button was clicked!"); // checking that the click is being processed here
 
-			// get a reference to the HTML element with id=zipCode and change it to uppercase
+			// get the value from the zipCode txt field, and change it to uppercase
 			let zipCode = document.getElementById("zipCode").value.toUpperCase();
 
 			// check if the user entered the 3 characters of the zip code
-			if (zipCode.length < 3) {
+			if ( isZipCodeComplete(zipCode) ) {
+				// get a reference to the HTML element with id=team
+				let team = document.getElementById("team").value;
+
+				checkBlackout(zipCode, team);
+			}
+			else {
 				// get a reference to the HTML element with id=result
 				let result = document.getElementById("result");
 
 				result.className = "alert alert-danger";
 				result.innerHTML = "<p>Please enter the first 3 characters of the zip code.</p>";
 			}
-			else {
-				checkBlackout(zipCode);
+		});
+
+		let isZipCodeComplete = function(zipCode) {
+			if (zipCode.length >= 3)
+				return true;
+			else
+				return false;
+		}
+
+		// add an event listener for every key pressed on the zipCode text field
+		zipCodeTxtField.addEventListener("keyup", () => {
+			// get the value from the zipCode txt field, and change it to uppercase
+			let zipCode = document.getElementById("zipCode").value.toUpperCase();
+
+			if( zipCode.length>2 ) {
+				// get a reference to the HTML element with id=team
+				let team = document.getElementById("team").value;
+
+				checkBlackout(zipCode, team);
 			}
 		});
-			
+
+		// get a reference to the HTML element with id=team
+		let teamInputSelect = document.getElementById("team");
+
+		// add an event listener for every change on the team select
+		teamInputSelect.addEventListener("change", () => {
+			// get the value from the zipCode txt field, and change it to uppercase
+			let zipCode = document.getElementById("zipCode").value.toUpperCase();
+
+			if( zipCode.length>2 ) {
+				// get a reference to the HTML element with id=team
+				let team = document.getElementById("team").value;
+
+				checkBlackout(zipCode, team);
+			}
+		});
+
 		
 	} // end of Start()
 
