@@ -36,6 +36,74 @@
 
 		console.log("Finished loading postal codes.");
 
+		// function that checks if a zip code is valid or not
+		let validZipCode = function(zipCode) {
+			let regex = new RegExp(/^[A-Z]\d[A-Z]$/i);
+			if (regex.test(zipCode))
+				return true;  // returns true only when the zipCode complies with the regular expression
+			else
+				return false;
+		};
+
+
+		let checkBlackout = function(zipCode) {
+			// get a reference to the HTML element with id=team
+			let team = document.getElementById("team").value;
+
+			// get a reference to the HTML element with id=result
+			let result = document.getElementById("result");
+
+			if ( validZipCode(zipCode) ) {
+				messageTxt = "<p>For the zip code: <b>" + zipCode + "</b></p><p>The <b>" + team + "</b> games are ";
+				// check the blackout constraint according to the selected team
+				switch( team ) {
+					case "leafs":
+						if ( codesLeafs.includes(zipCode) ) {
+							result.className = "alert alert-warning";
+							messageTxt += "blocked.</p>";
+						} else {
+							result.className = "alert alert-success";
+							messageTxt += "NOT blocked.</p>";
+						}
+						break;
+					case "canadiens":
+						if ( codesCanadiens.includes(zipCode) ) {
+							result.className = "alert alert-warning";
+							messageTxt += "blocked.</p>";
+						} else {
+							result.className = "alert alert-success";
+							messageTxt += "NOT blocked.</p>";
+						}
+						break;
+					case "senators":
+						if ( codesSenators.includes(zipCode) ) {
+							result.className = "alert alert-warning";
+							messageTxt += "blocked.</p>";
+						} else {
+							result.className = "alert alert-success";
+							messageTxt += "NOT blocked.</p>";
+						}
+						break;
+					case "jets":
+						if ( codesJets.includes(zipCode) ) {
+							result.className = "alert alert-warning";
+							messageTxt += "blocked.</p>";
+						} else {
+							result.className = "alert alert-success";
+							messageTxt += "NOT blocked.</p>";
+						}
+						break;
+				}
+				result.innerHTML = messageTxt;
+			}
+			else {
+				result.className = "alert alert-danger";
+				result.innerHTML = "<p>The zip code <b>" + zipCode + "</b> is not valid.</p>";
+			}
+		}; // end of checkBlackout
+
+
+
 		// get a reference to the HTML element with id=checkButton
 		let checkButton = document.getElementById("checkButton");
 
@@ -45,77 +113,19 @@
 
 			console.log("Check button was clicked!"); // checking that the click is being processed here
 
-			// get a reference to the HTML element with id=result
-			let result = document.getElementById("result");
-
-			// get a reference to the HTML element with id=team
-			let team = document.getElementById("team").value;
-
 			// get a reference to the HTML element with id=zipCode and change it to uppercase
 			let zipCode = document.getElementById("zipCode").value.toUpperCase();
 
-			// function that checks if a zip code is valid or not
-			let validZipCode = function(zipCode) {
-				let regex = new RegExp(/^[A-Z]\d[A-Z]$/i);
-				if (regex.test(zipCode))
-					return true;  // returns true only when the zipCode complies with the regular expression
-				else
-					return false;
-			};
-
 			// check if the user entered the 3 characters of the zip code
 			if (zipCode.length < 3) {
+				// get a reference to the HTML element with id=result
+				let result = document.getElementById("result");
+
 				result.className = "alert alert-danger";
 				result.innerHTML = "<p>Please enter the first 3 characters of the zip code.</p>";
 			}
 			else {
-				if ( validZipCode(zipCode) ) {
-					messageTxt = "<p>For the zip code: <b>" + zipCode + "</b></p><p>The <b>" + team + "</b> games are ";
-					// check the blackout constraint according to the selected team
-					switch( team ) {
-						case "leafs":
-							if ( codesLeafs.includes(zipCode) ) {
-								result.className = "alert alert-warning";
-								messageTxt += "blocked.</p>";
-							} else {
-								result.className = "alert alert-success";
-								messageTxt += "NOT blocked.</p>";
-							}
-							break;
-						case "canadiens":
-							if ( codesCanadiens.includes(zipCode) ) {
-								result.className = "alert alert-warning";
-								messageTxt += "blocked.</p>";
-							} else {
-								result.className = "alert alert-success";
-								messageTxt += "NOT blocked.</p>";
-							}
-							break;
-						case "senators":
-							if ( codesSenators.includes(zipCode) ) {
-								result.className = "alert alert-warning";
-								messageTxt += "blocked.</p>";
-							} else {
-								result.className = "alert alert-success";
-								messageTxt += "NOT blocked.</p>";
-							}
-							break;
-						case "jets":
-							if ( codesJets.includes(zipCode) ) {
-								result.className = "alert alert-warning";
-								messageTxt += "blocked.</p>";
-							} else {
-								result.className = "alert alert-success";
-								messageTxt += "NOT blocked.</p>";
-							}
-							break;
-					}
-					result.innerHTML = messageTxt;
-				}
-				else {
-					result.className = "alert alert-danger";
-					result.innerHTML = "<p>The zip code <b>" + zipCode + "</b> is not valid.</p>";
-				}
+				checkBlackout(zipCode);
 			}
 		});
 			
