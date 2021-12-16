@@ -1,6 +1,6 @@
 {
   "name": "blackoutCheck",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Blackout check for TSN live streams",
   "main": "index.js",
   "repository": "https://github.com/teban004/blackoutCheck.git",
