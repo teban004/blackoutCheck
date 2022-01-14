@@ -100,7 +100,7 @@
 			}
 			else {
 				result.className = "alert alert-danger";
-				result.innerHTML = "<p>There are no valid zip codes starting with '<b>" + zipCode + "</b>'. Please check and try again providing the first 3 characters of the zip code.</p>";
+				result.innerHTML = "<p>There are no valid zip codes starting with '<b>" + zipCode + "</b>'. Please check and try again.</p>";
 			}
 		}; // end of checkBlackout
 
