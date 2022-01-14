@@ -52,47 +52,43 @@
 			let result = document.getElementById("result");
 
 			if ( validZipCode(zipCode) ) {
-				let textBlocked = "blocked.<br>Due to NHL blackout rules, you are not authorized to view this game in your current location. If you want to view games out of your local region and are a BellTV subscriber, please contact BellTV to subscribe to NHL Centre Ice.</p>";
-				let textNotBlocked = "NOT blocked.<br>Check the customer's IP address if they are still unable to view the game. Lookup the IP to make sure that it is within the team's local region.</p>";
-				
 				messageTxt = "<p>For the zip code: <b>" + zipCode + "</b></p><p>The <b>" + team + "</b> games are ";
-
 				// check the blackout constraint according to the selected team
 				switch( team ) {
 					case "Leafs":
 						if ( codesLeafs.includes(zipCode) ) {
 							result.className = "alert alert-warning";
-							messageTxt += textBlocked;
+							messageTxt += "blocked.</p>";
 						} else {
 							result.className = "alert alert-success";
-							messageTxt += textNotBlocked;
+							messageTxt += "NOT blocked.</p>";
 						}
 						break;
 					case "Canadiens":
 						if ( codesCanadiens.includes(zipCode) ) {
 							result.className = "alert alert-warning";
-							messageTxt += textBlocked;
+							messageTxt += "blocked.</p>";
 						} else {
 							result.className = "alert alert-success";
-							messageTxt += textNotBlocked;
+							messageTxt += "NOT blocked.</p>";
 						}
 						break;
 					case "Senators":
 						if ( codesSenators.includes(zipCode) ) {
 							result.className = "alert alert-warning";
-							messageTxt += textBlocked;
+							messageTxt += "blocked.</p>";
 						} else {
 							result.className = "alert alert-success";
-							messageTxt += textNotBlocked;
+							messageTxt += "NOT blocked.</p>";
 						}
 						break;
 					case "Jets":
 						if ( codesJets.includes(zipCode) ) {
 							result.className = "alert alert-warning";
-							messageTxt += textBlocked;
+							messageTxt += "blocked.</p>";
 						} else {
 							result.className = "alert alert-success";
-							messageTxt += textNotBlocked;
+							messageTxt += "NOT blocked.</p>";
 						}
 						break;
 				}
