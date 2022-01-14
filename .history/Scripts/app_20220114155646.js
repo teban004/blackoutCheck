@@ -149,6 +149,14 @@
 
 				checkBlackout(zipCode, team);
 			}
+			else {
+				// get a reference to the HTML element with id=result
+				let result = document.getElementById("result");
+
+				// clear the result box
+				result.className = "";
+				result.innerHTML = "";
+			}
 		});
 
 		
